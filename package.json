@@ -1,0 +1,23 @@
+{
+  "name": "trentose2jan12-astronauts",
+  "version": "1.0.0",
+  "description": "Astronauts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddlucad96/trentose2jan12-astronauts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ddlucad96/trentose2jan12-astronauts/issues"
+  },
+  "homepage": "https://github.com/ddlucad96/trentose2jan12-astronauts#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
