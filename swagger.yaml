@@ -1,0 +1,153 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: "trentose2jan12-astronauts"
+  description: A sample API to manage astronauts
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Swagger API Team
+    email: foo@example.com
+    url: http://madskristensen.net
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+host: petstore.swagger.io
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /astronaut/{id}:
+    get:
+      description: Ritorna l'astronauta identificato tramite ID.
+      operationId: find if astronaut is in space by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of astronaut to search for
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Astronauta
+          schema:
+            $ref: '#/definitions/Astronaut'
+        404:
+          description: Astronauta non trovato 
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Errore
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Cambia i valori dell'astronauta
+      operationId: updateAstronaut
+      parameters:
+        - name: id
+          in: path
+          description: ID of astronaut to search for
+          required: true
+          type: integer
+          format: int64
+        - name: astronaut
+          in: body
+          description: astronaut
+          required: true
+          schema:
+            $ref: '#/definitions/Astronaut'
+      responses:
+        200:
+          description: Astronauta
+          schema:
+            $ref: '#/definitions/NewAstronaut'
+        404:
+          description: Astronauta non trovato 
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /astronaut:
+    post:
+      description: Aggiunge un'astronauta
+      operationId: addAstronaut
+      parameters:
+        - name: astronaut
+          in: body
+          description: astronaut
+          required: true
+          schema:
+            $ref: '#/definitions/NewAstronaut'
+      responses:
+        200:
+          description: Astronauta
+          schema:
+            $ref: '#/definitions/Astronaut'
+        404:
+          description: Astronauta non trovato 
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /search/{cognome}:
+    get:
+      description: Ritorna gli astronauti identificato tramite cognome.
+      operationId: find astronauts by surname
+      parameters:
+        - name: cognome
+          in: path
+          description: cognome dell'astronauta da cercare
+          required: true
+          type: string
+      responses:
+        200:
+          description: Astronauti trovati
+          schema:
+            $ref: '#/definitions/Astronaut'
+        404:
+          description: Astronauta non trovato 
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Errore
+          schema:
+            $ref: '#/definitions/Error'
+    
+    
+definitions:
+  Astronaut:
+    allOf:
+      - $ref: '#/definitions/NewAstronaut'
+  NewAstronaut:
+    required:
+      - firstName
+      - lastName
+      - isInSpace
+    properties:
+      id:
+        type: integer
+        format: int32
+      firstName:
+        type: string
+      lastName:
+        type: string
+      isInSpace:
+        type: boolean
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
