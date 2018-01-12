@@ -32,6 +32,16 @@ function creaAstronauta(name, last, space, id) {
     }
 }
 
+function getIndexAstronauta(astID) {
+    for (var i = 0; i < astronauti.length; i++) {
+        if (astronauti[i].id && parseInt(astronauti[i].id) == parseInt(astID)) {
+            console.log("VALORE " + astronauti[i].id)
+            return i;
+        }
+    }
+    return -1;
+}
+
 
 // test route to make sure everything is working
 router.get('/', function(req, res) {
@@ -56,7 +66,7 @@ router.route('/astronaut')
         function(req, res) {
             console.log("POST " + nextAID)
             var ident = nextAID;
-            
+
             var firstName = req.body.firstName;
             var lastName = req.body.lastName;
             var isInSpace = req.body.isInSpace;
@@ -81,7 +91,26 @@ router.route('/astronaut')
 
 
 
+        });
+
+router.route('/astronaut/:a_id')
+    .get(
+        function(req, res) {
+            console.log("GET " + req.params.a_id)
+            if (req.params.a_id) {
+                var indice = getIndexAstronauta(req.params.a_id);
+                if (indice == -1) {
+                    res.status(404);
+                    res.json({
+                        errore: "Nessun astronauta con quell'ID."
+                    });
+                } else {
+                    res.json(astronauti[indice]);
+                }
+            }
+
         })
+    
 
 // middleware route to support CORS and preflighted requests
 app.use(function(req, res, next) {
