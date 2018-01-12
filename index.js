@@ -36,10 +36,26 @@ function getIndexAstronauta(astID) {
     for (var i = 0; i < astronauti.length; i++) {
         if (astronauti[i].id && parseInt(astronauti[i].id) == parseInt(astID)) {
             console.log("VALORE " + astronauti[i].id)
+            
             return i;
         }
-    }
+    }    
     return -1;
+    
+}
+
+function getIndexAstronautaByCognome(cognome) {
+    var indici = []
+    for (var i = 0; i < astronauti.length; i++) {
+        if (astronauti[i].lastName && astronauti[i].lastName == cognome) {
+            console.log("COGNOME TROVATO " + astronauti[i].lastName)
+            indici.push(i);
+        }
+    }
+    if(indici.length == 0) {
+        return -1;
+    }
+    return indici;
 }
 
 
@@ -142,6 +158,28 @@ router.route('/astronaut/:a_id')
             })
         }
     })
+
+router.route('/search/:cognome')
+    .get(
+        function(req, res) {
+            console.log("GET " + req.params.cognome)
+            if (req.params.a_id) {
+                var indice = getIndexAstronautaByCognome(req.params.cognome);
+                if (indice == -1) {
+                    res.status(404);
+                    res.json({
+                        errore: "Nessun astronauta con quel cognome."
+                    });
+                } else {
+                    var re = []
+                    for (var i = 0; i < indice.length; i++) {
+                        re.push(astronauti[indice[i]])
+                    }
+                    res.json(re);
+                }
+            }
+
+        })
 
 
 
