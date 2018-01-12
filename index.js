@@ -110,7 +110,41 @@ router.route('/astronaut/:a_id')
             }
 
         })
-    
+    .put(function(req, res) {
+        console.log("PUT " + req.params.a_id)
+        var aID = req.params.a_id;
+        var firstName = req.body.firstName;
+        var lastName = req.body.lastName;
+        var isInSpace = req.body.isInSpace;
+
+        if (aID) {
+            var indice = getIndexAstronauta(aID);
+            if (indice != -1) {
+                astronauti[indice].firstName = firstName;
+                astronauti[indice].lastName = lastName;
+                astronauti[indice].isInSpace = isInSpace;
+
+                res.json({
+                    successo: "Astronauta modificato correttamente. Annota il tuo id per successive modifiche.",
+                    ID: aID
+                })
+            } else {
+                res.status(404);
+                res.json({
+                    errore: "Astronauta non modificato perchè non c'era il num: " + aID + "."
+                })
+            }
+
+        } else {
+            res.status(404);
+            res.json({
+                errore: "Astronauta non modificato."
+            })
+        }
+    })
+
+
+
 
 // middleware route to support CORS and preflighted requests
 app.use(function(req, res, next) {
