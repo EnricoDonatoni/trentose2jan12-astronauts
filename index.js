@@ -21,6 +21,17 @@ var router = express.Router();
 
 var astronauti = [];
 
+var nextAID = 1;
+
+function creaAstronauta(name, last, space, id) {
+    return {
+        firstName: name,
+        lastName: last,
+        isInSpace: space,
+        id: id
+    }
+}
+
 
 // test route to make sure everything is working
 router.get('/', function(req, res) {
@@ -34,6 +45,43 @@ router.get('/', function(req, res) {
 
 });
 
+
+router.route('/astronaut')
+    .get(
+        function(req, res) {
+            console.log("GET ALL");
+            res.json(astronauti);
+        })
+    .post(
+        function(req, res) {
+            console.log("POST " + nextAID)
+            var ident = nextAID;
+            
+            var firstName = req.body.firstName;
+            var lastName = req.body.lastName;
+            var isInSpace = req.body.isInSpace;
+
+            console.log(firstName);
+            console.log(lastName);
+            console.log(isInSpace);
+
+
+            if (firstName && lastName && isInSpace) {
+                nextAID++;
+                astronauti.push(creaAstronauta(firstName, lastName, isInSpace, ident));
+                res.json({
+                    successo: "Astronauta creato correttamente. Annota il tuo id per successive modifiche.",
+                    ID: ident
+                })
+            } else {
+                res.json({
+                    errore: "Astronauta non inserito."
+                })
+            }
+
+
+
+        })
 
 // middleware route to support CORS and preflighted requests
 app.use(function(req, res, next) {
